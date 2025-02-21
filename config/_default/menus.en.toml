@@ -1,0 +1,86 @@
+# main menu
+[[main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[main]]
+name = "Docs"
+url = "/documentation/"
+weight = 2
+
+[[main]]
+name = "Blog"
+url = "/blog/"
+weight = 3
+
+[[main]]
+name = "Community"
+url = "/community/"
+weight = 4
+
+[[main]]
+parent = "Community"
+name = "About"
+url = "/community/"
+weight = 1
+
+[[main]]
+parent = "Community"
+name = "Events"
+url = "/events/"
+weight = 2
+
+[[main]]
+parent = "Community"
+name = "Resources"
+url = "/resources/"
+weight = 3
+
+
+## Documentation Menus
+
+[[docs]]
+  name = "Overview"
+  weight = 5
+  identifier = "overview"
+  url = "/documentation/overview"
+
+[[docs]]
+  name = "Tutorials"
+  weight = 15
+  identifier = "tutorials"
+  url = "/documentation/tutorials"
+
+[[docs]]
+  name = "How-to Guides"
+  weight = 20
+  identifier = "guides"
+  url = "/documentation/guides"
+
+[[docs]]
+  name = "Explanations"
+  weight = 21
+  identifier = "explanations"
+  url = "/documentation/explanations"
+
+[[docs]]
+  name = "References"
+  weight = 22
+  identifier = "references"
+  post = "break"
+  url = "/documentation/references"
+
+# footer menu left
+[[footer_left]]
+name = "Quick Start"
+url = "./documentation/tutorials/getting-started/"
+
+# footer menu middle
+[[footer_middle]]
+name = "Privacy Policy"
+url = "https://www.linuxfoundation.org/legal/privacy-policy"
+
+[[footer_right]]
+name = "Terms & Conditions"
+url = "https://www.linuxfoundation.org/legal/terms"

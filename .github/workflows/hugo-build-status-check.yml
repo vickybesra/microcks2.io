@@ -1,0 +1,62 @@
+# This GitHub Action builds and serves a Hugo website, checking for build errors on each push to the master branch.
+# The build status is checked, and if the build fails, the commit is blocked.
+
+name: Hugo Build and Status Check
+
+# Trigger the workflow on push events to the main branch
+on:
+  # ucomment the following line if you want to run the workflow manually
+  # workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    # Use the latest version of Ubuntu as the runner
+    runs-on: ubuntu-latest
+
+    # Steps to be executed as part of the job
+    steps:
+      # Step to checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step to set up Hugo
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          # Always use the latest version of Hugo, in case of issue with the latest version, 
+          # you can specify a specific version using '0.125.5'
+          hugo-version: 'latest'
+          # Set the extended option to true to install the extended version of Hugo, mandatory for Microcks website
+          extended: true
+
+      # Step to build the site
+      - name: Build site
+        run: hugo --minify
+        id: build
+
+      # Step to start Hugo server in the background
+      - name: Start Hugo server
+        run: hugo server --minify --port=8888 &
+
+      # Step to verify that Hugo server started successfully
+      - name: Verify Hugo server
+        run: |
+          sleep 5  # Wait for a few seconds for the server to start
+          if ! lsof -i:8888; then
+            echo "::error::Hugo server failed to start!"
+            exit 1
+          fi
+
+      # Step to stop the Hugo server at the end of the workflow as it's running in the background
+      - name: Stop Hugo server
+        run: |
+          PID=$(lsof -t -i:8888)
+          if [ -n "$PID" ]; then
+            kill $PID
+            echo "Hugo server stopped."
+          else
+            echo "Hugo server was not running."
+          fi
