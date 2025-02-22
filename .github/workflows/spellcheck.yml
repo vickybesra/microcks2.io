@@ -22,8 +22,9 @@ jobs:
 
       - name: Install misspell (latest)
         run: |
-          go install github.com/client9/misspell@latest
+          go install github.com/client9/misspell/cmd/misspell@latest
           sudo mv $(go env GOPATH)/bin/misspell /usr/local/bin/
+      
 
       - name: Run misspell on Documentation
         run: |
