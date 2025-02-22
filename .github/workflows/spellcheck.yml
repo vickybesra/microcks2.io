@@ -18,5 +18,5 @@ jobs:
       - name: Run Spell Checker
         uses: rojopolis/spellcheck-github-actions@v0
         with:
-          config_path: .spellcheck.yml
+          config_path: .spellchecker.yml
           task_name: Markdown

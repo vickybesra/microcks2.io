@@ -1,0 +1,20 @@
+matrix:
+- name: Markdown
+  aspell:
+    lang: en
+  dictionary:
+    wordlists:
+      - .wordlist.txt   # Optional: Add technical terms or Hugo-specific commands here
+    encoding: utf-8
+  pipeline:
+    - pyspelling.filters.markdown:
+        markdown_extensions:
+          - pymdownx.superfences  # Helps ignore code fences in Markdown
+    - pyspelling.filters.html:
+        comments: false
+        ignores:
+          - code
+          - pre
+  sources:
+    - "content/**/*.md"
+  default_encoding: utf-8
