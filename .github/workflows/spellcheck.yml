@@ -15,7 +15,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v3
         with:
-          go-version: '1.23'  # Use an appropriate Go version
+          go-version: '1.23'
 
       - name: List workspace files (debug)
         run: ls -la
@@ -24,9 +24,10 @@ jobs:
         run: |
           go install github.com/golangci/misspell/cmd/misspell@latest
           sudo mv $(go env GOPATH)/bin/misspell /usr/local/bin/
-      
 
       - name: Run misspell on Documentation
         run: |
           echo "Running misspell on Markdown files in content/documentation/ ..."
-          misspell -error $(find content/documentation -type f -name "*.md")
+          # Read .wordlist.txt, replace newlines with commas to form a comma-separated ignore list
+          IGNORE_WORDS=$(tr '\n' ',' < .wordlist.txt | sed 's/,$//')
+          misspell -i "$IGNORE_WORDS" -error $(find content/documentation -type f -name "*.md")
