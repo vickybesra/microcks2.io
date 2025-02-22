@@ -12,11 +12,26 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Install Hunspell and Dictionary
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y hunspell hunspell-en-us
+
       - name: List workspace files (debug)
         run: ls -la
 
-      - name: Run Spell Checker
-        uses: rojopolis/spellcheck-github-actions@v0
-        with:
-          config_path: .spellchecker.yml
-          task_name: Markdown
+      - name: Run Hunspell Spell Check on Documentation
+        run: |
+          EXIT_CODE=0
+          # Check all Markdown files in content/documentation/
+          for file in $(find content/documentation -type f -name "*.md"); do
+            echo "Checking $file"
+            # -l lists misspelled words; -d specifies the dictionary; -p uses your personal word list
+            misspelled=$(hunspell -l -d en_US -p .wordlist.txt "$file")
+            if [ -n "$misspelled" ]; then
+              echo "Misspelled words found in $file:"
+              echo "$misspelled"
+              EXIT_CODE=1
+            fi
+          done
+          exit $EXIT_CODE
