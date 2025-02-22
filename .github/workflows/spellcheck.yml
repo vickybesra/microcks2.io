@@ -12,19 +12,20 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.20'  # Use an appropriate Go version
+
       - name: List workspace files (debug)
         run: ls -la
 
-      - name: Install misspell
+      - name: Install misspell (latest)
         run: |
-          # Download and extract the precompiled misspell binary (adjust version as needed)
-          wget https://github.com/client9/misspell/releases/download/v0.3.4/misspell_linux_amd64.tar.gz
-          tar -xzf misspell_linux_amd64.tar.gz
-          chmod +x misspell
-          sudo mv misspell /usr/local/bin/
+          go install github.com/client9/misspell@latest
+          sudo mv $(go env GOPATH)/bin/misspell /usr/local/bin/
 
       - name: Run misspell on Documentation
         run: |
           echo "Running misspell on Markdown files in content/documentation/ ..."
-          # Find all Markdown files and run misspell
           misspell -error $(find content/documentation -type f -name "*.md")
