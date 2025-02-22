@@ -12,26 +12,19 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Hunspell and Dictionary
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y hunspell hunspell-en-us
-
       - name: List workspace files (debug)
         run: ls -la
 
-      - name: Run Hunspell Spell Check on Documentation
+      - name: Install misspell
         run: |
-          EXIT_CODE=0
-          # Check all Markdown files in content/documentation/
-          for file in $(find content/documentation -type f -name "*.md"); do
-            echo "Checking $file"
-            # -l lists misspelled words; -d specifies the dictionary; -p uses your personal word list
-            misspelled=$(hunspell -l -d en_US -p .wordlist.txt "$file")
-            if [ -n "$misspelled" ]; then
-              echo "Misspelled words found in $file:"
-              echo "$misspelled"
-              EXIT_CODE=1
-            fi
-          done
-          exit $EXIT_CODE
+          # Download and extract the precompiled misspell binary (adjust version as needed)
+          wget https://github.com/client9/misspell/releases/download/v0.3.4/misspell_linux_amd64.tar.gz
+          tar -xzf misspell_linux_amd64.tar.gz
+          chmod +x misspell
+          sudo mv misspell /usr/local/bin/
+
+      - name: Run misspell on Documentation
+        run: |
+          echo "Running misspell on Markdown files in content/documentation/ ..."
+          # Find all Markdown files and run misspell
+          misspell -error $(find content/documentation -type f -name "*.md")
