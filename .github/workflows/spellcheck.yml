@@ -22,7 +22,7 @@ jobs:
 
       - name: Install misspell (latest)
         run: |
-          go install github.com/golangci/misspell
+          go install github.com/golangci/misspell/cmd/misspell@latest
           sudo mv $(go env GOPATH)/bin/misspell /usr/local/bin/
       
 
