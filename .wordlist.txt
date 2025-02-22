@@ -4649,6 +4649,8 @@ Checking content/documentation/references/artifacts/grpc-conventions.md
 Misspelled words found in content/documentation/references/artifacts/grpc-conventions.md:
 gRPC
 gRPC
+microcks
+Microcks
 gRPC
 gRPC
 gRPC
